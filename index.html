@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Rekaz ALdirah | ركاز الديرة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: rgba(198, 40, 40, 0.2);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-touch-callout: none;
+        }
+        
+        /* انبثاق العناصر من الأسفل عند التمرير */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .scroll-animate.scroll-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-animate.scroll-visible.menu-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .scroll-animate.scroll-visible.branch-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .scroll-animate.scroll-visible.goal-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* تفاعل اللمس - تأثير الضغط الفوري */
+        .touch-active {
+            transform: scale(0.97) !important;
+            opacity: 0.92;
+            transition: transform 0.1s ease, opacity 0.1s ease !important;
+        }
+        
+        :root {
+            --primary: #c62828;
+            --primary-dark: #8e0000;
+            --secondary: #ff9800;
+            --dark: #1a1a1a;
+            --light: #f8f8f8;
+            --gray: #757575;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            touch-action: manipulation;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* شريط التنقل */
+        header {
+            background-color: rgba(26, 26, 26, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-right: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            bottom: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a:active::after {
+            width: 100%;
+        }
+        
+        .nav-links a:active {
+            color: var(--secondary);
+            opacity: 0.9;
+        }
+        
+        /* القسم الرئيسي */
+        .hero {
+            height: 100vh;
+            min-height: 500px;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('لقطة الشاشة 2026-02-05 005827.jpeg') center center no-repeat;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding-top: 280px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #eee;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+        
+        .hero-content span {
+            color: var(--secondary);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 70px;
+        }
+        
+        .hero-buttons .btn-secondary {
+            margin-left: 0;
+        }
+        
+        .btn-secondary:hover {
+            background-color: white;
+            color: var(--dark);
+        }
+        
+        .btn-secondary:active {
+            transform: scale(0.96);
+        }
+        
+        /* قسم المنيو */
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.05rem;
+            margin-top: 10px;
+        }
+        
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 10px 25px;
+            margin: 0 5px 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .category-btn.active, .category-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .category-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            display: flex;
+            cursor: pointer;
+            touch-action: manipulation;
+            flex-direction: column;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(46, 125, 50, 0.15);
+        }
+        
+        .menu-item:hover .menu-item-img {
+            transform: scale(1.03);
+        }
+        
+        .menu-item:active {
+            transform: translateY(-4px) scale(0.98);
+        }
+        
+        .menu-item-img {
+            width: 100%;
+            aspect-ratio: 1;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        
+        .menu-item-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 25px 20px;
+        }
+        
+        .menu-item-title {
+            font-size: 1.15rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .menu-item-desc {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .menu-item-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+        
+        .menu-item .btn {
+            padding: 10px 24px;
+            font-size: 15px;
+        }
+        
+        /* قسم الفروع */
+        .branches-section {
+            padding: 80px 0;
+        }
+        
+        .branches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .branch-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            text-align: center;
+            border-top: 4px solid var(--primary);
+            cursor: pointer;
+            touch-action: manipulation;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .branch-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(198, 40, 40, 0.15);
+        }
+        
+        .branch-card:active {
+            transform: translateY(-4px) scale(0.98);
+        }
+        
+        .branch-card .branch-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .branch-card .branch-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .branch-card .branch-city {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        .branch-card .branch-hours {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .branch-card .branch-hours i {
+            font-size: 0.85rem;
+        }
+
+        .branch-card .branch-buttons {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .branch-card .branch-maps-btn,
+        .branch-card .branch-call-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .branch-card .branch-maps-btn:hover,
+        .branch-card .branch-call-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .branch-card .branch-call-btn {
+            padding: 8px 14px;
+        }
+
+        .branch-card .branch-call-btn i {
+            font-size: 0.9rem;
+        }
+
+        .branch-card .branch-whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            font-size: 0.9rem;
+            background: #25D366;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .branch-card .branch-whatsapp-btn:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+
+        .branch-card .branch-whatsapp-btn i {
+            font-size: 1rem;
+        }
+        
+        /* قسم الرؤية والأهداف */
+        .vision-goals-section {
+            padding: 80px 0;
+        }
+        
+        .vision-goals-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+            margin-bottom: 60px;
+        }
+        
+        .vision-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 45px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(198, 40, 40, 0.25);
+        }
+        
+        .vision-card .vision-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+        
+        .vision-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .vision-card p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            opacity: 0.95;
+        }
+        
+        .goals-title {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .goals-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+        }
+        
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .goal-card {
+            background: white;
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            border-right: 5px solid var(--secondary);
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        
+        .goal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .goal-card:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        
+        .goal-card .goal-num {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 45px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .goal-card h4 {
+            font-size: 1.25rem;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+        
+        .goal-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        /* قسم الاتصال */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .contact-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .contact-card:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        
+        .contact-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            border-radius: 50%;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+        
+        .contact-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .contact-card p {
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            transform: scale(1.05);
+        }
+        
+        .whatsapp-btn:active {
+            transform: scale(0.96);
+        }
+        
+        .whatsapp-btn i {
+            margin-left: 8px;
+        }
+        
+        /* قسم الحجوزات */
+        .reservation-form {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-format-hint {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--gray);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .form-control, input, select, textarea {
+            touch-action: manipulation;
+            font-size: 16px;
+        }
+
+        /* نافذة اختيار الفرع للطلب */
+        .order-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .order-modal-overlay.show {
+            display: flex;
+        }
+        .order-modal {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        .order-modal h3 {
+            margin-bottom: 16px;
+            color: var(--dark);
+            font-size: 1.25rem;
+        }
+        .order-modal-branches {
+            margin-bottom: 20px;
+        }
+        .order-modal-branches label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .order-modal-branches label:hover {
+            border-color: var(--primary);
+            background: rgba(198, 40, 40, 0.05);
+        }
+        .order-modal-branches input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+        .order-modal-type {
+            margin-bottom: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+        }
+        .order-modal-type .order-type-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+        .order-modal-type label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            cursor: pointer;
+        }
+        .order-modal-type input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        .order-modal-location-wrap {
+            display: none;
+            margin-top: 12px;
+        }
+        .order-modal-location-wrap.show {
+            display: block;
+        }
+        .order-modal-location-wrap .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        .order-modal-location-wrap a.open-maps-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        .order-modal-confirm-btn {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        .order-modal-confirm-btn.show {
+            display: block;
+        }
+        .order-modal-close {
+            margin-top: 12px;
+            width: 100%;
+            padding: 10px;
+            background: #eee;
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        /* تذييل الصفحة */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo span {
+            color: var(--secondary);
+        }
+        
+        .footer-about p {
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links h4, .footer-hours h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4::after, .footer-hours h4::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+            bottom: 0;
+            right: 0;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-right: 5px;
+        }
+        
+        .hours-list p {
+            color: #bbb;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .hours-list span {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            color: #bbb;
+            font-size: 15px;
+        }
+        
+        /* هامبرغر المنيو للموبايل */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+        
+        /* شاشات كبيرة جداً */
+        @media (min-width: 1920px) {
+            .hero {
+                background-size: cover;
+                background-position: center center;
+            }
+        }
+        
+        /* التجاوب مع الشاشات الصغيرة */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .hero {
+                background-size: cover;
+                background-position: center center;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                margin-bottom: 40px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .vision-goals-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero {
+                min-height: 100vh;
+                height: auto;
+                padding: 120px 20px 80px;
+                background-size: cover;
+                background-position: center center;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.8rem;
+                margin-bottom: 15px;
+            }
+            
+            .hero-content p {
+                font-size: 1.15rem;
+                margin-bottom: 25px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            
+            .hero-buttons .btn {
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                left: 0;
+                background: rgba(26, 26, 26, 0.98);
+                flex-direction: column;
+                padding: 20px;
+                gap: 10px;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin-right: 0;
+                text-align: center;
+            }
+            
+            nav {
+                position: relative;
+            }
+            
+            .menu-items {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 30px;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .vision-goals-wrapper {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .vision-card {
+                padding: 35px 25px;
+            }
+            
+            .vision-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .goals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .branches-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 20px;
+            }
+            
+            .branch-card {
+                padding: 25px 20px;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+            
+            .hero {
+                padding: 100px 15px 60px;
+                min-height: 80vh;
+                background-size: cover;
+                background-position: center center;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+                line-height: 1.3;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+            
+            .section-title h2 {
+                font-size: 1.9rem;
+            }
+            
+            .section-title p {
+                font-size: 0.95rem;
+            }
+            
+            section {
+                padding: 50px 0;
+            }
+            
+            .menu-items {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .menu-item-content {
+                padding: 20px 15px;
+            }
+            
+            .menu-item-title {
+                font-size: 1.15rem;
+            }
+            
+            .category-btn {
+                padding: 8px 18px;
+                font-size: 14px;
+            }
+            
+            .reservation-form {
+                padding: 30px 20px;
+                margin: 0 15px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .contact-card {
+                padding: 25px 20px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .footer-logo {
+                font-size: 24px;
+            }
+            
+            .hours-list p {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 12px;
+            }
+            
+            .hero {
+                padding: 90px 12px 50px;
+                min-height: 70vh;
+                background-size: cover;
+                background-position: center center;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-content p {
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                padding: 10px 24px;
+                font-size: 16px;
+            }
+            
+            .section-title h2 {
+                font-size: 1.65rem;
+            }
+            
+            .section-title {
+                margin-bottom: 30px;
+            }
+            
+            .menu-item-content {
+                padding: 18px 12px;
+            }
+            
+            .copyright {
+                font-size: 13px;
+                padding-top: 20px;
+            }
+        }
+        
+        @media (max-width: 380px) {
+            .hero {
+                min-height: 600px;
+                background-size: cover;
+                background-position: center center;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.6rem;
+            }
+            
+            .hero-buttons .btn {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">مطاعم <span>ركاز </span>الديرة</a>
+                <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="#vision">الرؤية والأهداف</a></li>
+                    <li><a href="#branches">فروعنا</a></li>
+                    <li><a href="#menu">قائمة الطعام</a></li>
+                    <li><a href="#reservation">الحجوزات</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- القسم الرئيسي -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                              
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn">قائمة الطعام</a>
+                    <a href="#reservation" class="btn btn-secondary">احجز طاولتك</a>
+                    <a href="بارشوت ركاز الديرة.pdf" class="btn btn-secondary" download="بارشوت ركاز الديرة.pdf"><i class="fas fa-download"></i> تحميل البارشوت</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الرؤية والأهداف -->
+    <section id="vision" class="vision-goals-section">
+        <div class="container">
+            <div class="section-title scroll-animate">
+                <h2>رؤيتنا وأهدافنا</h2>
+                <p>ما نطمح لتحقيقه في خدمتكم</p>
+            </div>
+            <div class="vision-goals-wrapper">
+                <div class="vision-card scroll-animate">
+                    <div class="vision-icon"><i class="fas fa-eye"></i></div>
+                    <h3>رؤيتنا</h3>
+                    <p>أن نكون الخيار الأول لعشاق المأكولات الشعبية الأصيلة، والمطعم الرائد في تقديم تجربة طعام تراثية راقية تليق بضيوفنا الكرام في جميع أنحاء المملكة.</p>
+                </div>
+                <div class="vision-card scroll-animate">
+                    <div class="vision-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>رسالتنا</h3>
+                    <p>تقديم أطباق أصيلة ومميزة بأعلى معايير الجودة والنظافة، في أجواء عائلية دافئة، مع الحفاظ على التراث الطهوي ونقله للأجيال القادمة.</p>
+                </div>
+                <div class="goals-title scroll-animate">
+                    <h2>أهدافنا</h2>
+                </div>
+                <div class="goals-grid">
+                    <div class="goal-card scroll-animate">
+                        <span class="goal-num">1</span>
+                        <h4>الجودة والتميز</h4>
+                        <p>التزام دائم باختيار أجود المكونات وتقديم أطباق تتميز بالطعم الأصيل والجودة العالية.</p>
+                    </div>
+                    <div class="goal-card scroll-animate">
+                        <span class="goal-num">2</span>
+                        <h4>رضا العملاء</h4>
+                        <p>وضع رضا ضيوفنا في مقدمة أولوياتنا وتقديم خدمة استثنائية تستحق ثقتهم.</p>
+                    </div>
+                    <div class="goal-card scroll-animate">
+                        <span class="goal-num">3</span>
+                        <h4>التوسع والانتشار</h4>
+                        <p>التوسع في فروعنا لنكون قريبين منكم وتقديم تجربتنا في المزيد من المدن.</p>
+                    </div>
+                    <div class="goal-card scroll-animate">
+                        <span class="goal-num">4</span>
+                        <h4>الحفاظ على الأصالة</h4>
+                        <p>إحياء الوصفات التقليدية والحفاظ على الهوية الطهوية الأصيلة في كل ما نقدمه.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الفروع -->
+    <section id="branches" class="branches-section">
+        <div class="container">
+            <div class="section-title scroll-animate">
+                <h2>فروعنا</h2>
+                <p>تسعة فروع لخدمتكم في مختلف أنحاء المملكة</p>
+            </div>
+            <div class="branches-grid">
+                <div class="branch-card scroll-animate">
+                    <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3 class="branch-name">مطعم ركاز الديرة فرع صناعية فوزان</h3>
+                    <p class="branch-city">طريق الرياض_الخرج مخرج ١١صناعية الفوزان محطة كويك بور</p>
+                    <p class="branch-hours"><i class="fas fa-clock"></i> 4:00 ص - 12:00 ص</p>
+                    <div class="branch-buttons">
+                        <a href="https://maps.app.goo.gl/qnSc7xpQv8nvm3HR7" class="branch-maps-btn" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> عرض على الخريطة</a>
+                        <a href="https://wa.me/966530585130?text=مرحبا%20مطاعم%20ركاز%20الديرة" class="branch-whatsapp-btn" target="_blank" rel="noopener" title="تواصل عبر واتساب"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+966530585130" class="branch-call-btn" title="اتصال بالفرع" aria-label="اتصال بالفرع"><i class="fas fa-phone-alt"></i></a>
+                    </div>
+                </div>
+                <div class="branch-card scroll-animate">
+                    <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3 class="branch-name">مطاعم ركاز الديرة الرفائع</h3>
+                    <p class="branch-city">طريق الخرج _الرياض  الرفايع مخرج ٧محطة الدريس</p>
+                    <p class="branch-hours"><i class="fas fa-clock"></i> 10:00 ص - 12:00 ص</p>
+                    <div class="branch-buttons">
+                        <a href="https://maps.app.goo.gl/7bbEERfDRo3qoX3G9" class="branch-maps-btn" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> عرض على الخريطة</a>
+                        <a href="https://wa.me/966559929373?text=مرحبا%20مطاعم%20ركاز%20الديرة" class="branch-whatsapp-btn" target="_blank" rel="noopener" title="تواصل عبر واتساب"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+966559929373" class="branch-call-btn" title="اتصال بالفرع" aria-label="اتصال بالفرع"><i class="fas fa-phone-alt"></i></a>
+                    </div>
+                </div>
+                <div class="branch-card scroll-animate">
+                    <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3 class="branch-name">مطاعم ركاز الديرة</h3>
+                    <p class="branch-city">طريق الرياض الخرج جوار تفتيش الخرج محطة بترولي</p>
+                    <p class="branch-hours"><i class="fas fa-clock"></i> 4:00 ص - 12:00 ص</p>
+                    <div class="branch-buttons">
+                        <a href="https://maps.app.goo.gl/pgdBG4uy9V5SNW8J6" class="branch-maps-btn" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> عرض على الخريطة</a>
+                        <a href="https://wa.me/966534395313?text=مرحبا%20مطاعم%20ركاز%20الديرة" class="branch-whatsapp-btn" target="_blank" rel="noopener" title="تواصل عبر واتساب"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+966534395313" class="branch-call-btn" title="اتصال بالفرع" aria-label="اتصال بالفرع"><i class="fas fa-phone-alt"></i></a>
+                    </div>
+                </div>
+                <div class="branch-card scroll-animate">
+                    <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3 class="branch-name">مطعم ركاز الديرة المزاحمية </h3>
+                    <p class="branch-city">طريق مكه _المزاحميه _محطة جي ويل _القلعة سابقاً</p>
+                    <p class="branch-hours"><i class="fas fa-clock"></i> دوام كامل على مدار الساعة</p>
+                    <div class="branch-buttons">
+                        <a href="https://maps.app.goo.gl/iddn3fkCuGQBCQj79" class="branch-maps-btn" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> عرض على الخريطة</a>
+                        <a href="https://wa.me/966538024202?text=مرحبا%20مطاعم%20ركاز%20الديرة" class="branch-whatsapp-btn" target="_blank" rel="noopener" title="تواصل عبر واتساب"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+966538024202" class="branch-call-btn" title="اتصال بالفرع" aria-label="اتصال بالفرع"><i class="fas fa-phone-alt"></i></a>
+                    </div>
+                </div>
+                <div class="branch-card scroll-animate">
+                    <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3 class="branch-name">مطعم ركاز الديرة الغرابي </h3>
+                    <p class="branch-city">الغرابي - شارع تميم بن بكر - جوار جامع الرشود</p>
+                    <p class="branch-hours"><i class="fas fa-clock"></i> 4:00 ص - 1:00 ص</p>
+                    <div class="branch-buttons">
+                        <a href="https://maps.app.goo.gl/sPGR4uVMXseoPS8a9" class="branch-maps-btn" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> عرض على الخريطة</a>
+                        <a href="https://wa.me/966538736733?text=مرحبا%20مطاعم%20ركاز%20الديرة" class="branch-whatsapp-btn" target="_blank" rel="noopener" title="تواصل عبر واتساب"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+966538736733" class="branch-call-btn" title="اتصال بالفرع" aria-label="اتصال بالفرع"><i class="fas fa-phone-alt"></i></a>
+                    </div>
+                </div>
+                <div class="branch-card scroll-animate">
+                    <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3 class="branch-name">مطعم ركاز الديرة  </h3>
+                    <p class="branch-city">طريق الخرج الرياض  حي المناخ جوار مستودع أمازون</p>
+                    <p class="branch-hours"><i class="fas fa-clock"></i> 24 ساعة</p>
+                    <div class="branch-buttons">
+                        <a href="https://maps.app.goo.gl/sAzTqWJEM1Tohhk16" class="branch-maps-btn" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> عرض على الخريطة</a>
+                        <a href="https://wa.me/966536538320?text=مرحبا%20مطاعم%20ركاز%20الديرة" class="branch-whatsapp-btn" target="_blank" rel="noopener" title="تواصل عبر واتساب"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+966536538320" class="branch-call-btn" title="اتصال بالفرع" aria-label="اتصال بالفرع"><i class="fas fa-phone-alt"></i></a>
+                    </div>
+                </div>
+                <div class="branch-card scroll-animate">
+                    <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3 class="branch-name">مطعم ركاز الديرة فرع الطويق </h3>
+                    <p class="branch-city">طويق طريق مكة محطة بيرومين</p>
+                    <p class="branch-hours"><i class="fas fa-clock"></i> 24 ساعة</p>
+                    <div class="branch-buttons">
+                        <a href="https://maps.app.goo.gl/M9hmx6GQdCRrMuki7" class="branch-maps-btn" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> عرض على الخريطة</a>
+                        <a href="https://wa.me/966535463310?text=مرحبا%20مطاعم%20ركاز%20الديرة" class="branch-whatsapp-btn" target="_blank" rel="noopener" title="تواصل عبر واتساب"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+966535463310" class="branch-call-btn" title="اتصال بالفرع" aria-label="اتصال بالفرع"><i class="fas fa-phone-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- قسم المنيو -->
+    <section id="menu" class="menu">
+        <div class="container">
+            <div class="section-title scroll-animate">
+                <h2>قائمة الطعام</h2>
+                <p>استمتع بأشهى الأطباق المحضرة بأيدي أمهر الطهاة</p>
+            </div>
+            
+            <div class="menu-categories">
+                <!--<button class="category-btn active" data-category="all">الكل</button>
+                <button class="category-btn" data-category="appetizers">المقبلات</button>-->
+                <button class="category-btn" data-category="main">الوجبات الرئيسية</button>
+                <button class="category-btn" data-category="desserts">الايدامات والسلطات</button>
+                <button class="category-btn" data-category="drinks">المشروبات</button>
+            </div>
+            
+            <div class="menu-items" id="menu-items-container">
+                <!-- سيتم تعبئة العناصر عبر JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الحجوزات -->
+    <section id="reservation" class="reservation">
+        <div class="container">
+            <div class="section-title">
+                <h2>احجز طاولتك</h2>
+                <p>احجز طاولتك الآن واستمتع بتجربة طعام لا تنسى</p>
+            </div>
+            
+            <div class="reservation-form">
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="customerName">اسم العميل</label>
+                        <input type="text" id="customerName" class="form-control" required placeholder="أدخل اسمك">
+                    </div>
+                    <div class="form-group">
+                        <label for="branchSelect">الفرع المراد الحجز فيه</label>
+                        <select id="branchSelect" class="form-control" required>
+                            <option value="">اختر الفرع</option>
+                            <option value="966530585130">مطعم ركاز الديرة فرع صناعية فوزان</option>
+                            <option value="966559929373">مطاعم ركاز الديرة الرفائع</option>
+                            <option value="966534395313">مطاعم ركاز الديرة - محطة بترولي</option>
+                            <option value="966538024202">مطعم ركاز الديرة المزاحمية</option>
+                            <option value="966538736733">مطعم ركاز الديرة الغرابي</option>
+                            <option value="966536538320">مطعم ركاز الديرة - حي المناخ</option>
+                            <option value="966535463310">مطعم ركاز الديرة فرع الطويق</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">التاريخ <span class="form-format-hint">(dd/mm/yy)</span></label>
+                        <input type="date" id="date" class="form-control" required title="Date format: dd/mm/yy">
+                    </div>
+                    <div class="form-group">
+                        <label for="time">الوقت</label>
+                        <input type="time" id="time" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%; font-size: 20px; padding: 15px;">حجز الطاولة</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">ركاز <span>الديرة</span></div>
+                    <p>مطعم ركاز الديرة يقدم أشهى المأكولات الشعبية الأصيلة في أجواء عائلية دافئة. نحرص على تقديم تجربة طعام تراثية راقية بأعلى معايير الجودة والنظافة.</p>
+                    <div class="social-links">
+                        <a href="#" class="btn" style="margin: 5px; padding: 8px 15px;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn" style="margin: 5px; padding: 8px 15px;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="btn" style="margin: 5px; padding: 8px 15px;"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#vision">الرؤية والأهداف</a></li>
+                        <li><a href="#branches">فروعنا</a></li>
+                        <li><a href="#menu">قائمة الطعام</a></li>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="#reservation">الحجوزات</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-hours">
+                    <h4>ساعات العمل</h4>
+                    <div class="hours-list">
+                        <p>السبت - الخميس <span>10:00 ص - 12:00 ص</span></p>
+                        <p>الجمعة <span>2:00 م - 12:00 ص</span></p>
+                        <p>العطلات الرسمية <span>مفتوح</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة &copy; 2026 مطعم ركاز الديرة</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- نافذة اختيار الفرع للطلب -->
+    <div class="order-modal-overlay" id="orderModalOverlay">
+        <div class="order-modal">
+            <h3>اختر الفرع لإرسال الطلب</h3>
+            <div class="order-modal-branches" id="orderModalBranches"></div>
+            <div class="order-modal-type">
+                <div class="order-type-title">نوع الطلب (اختر واحداً)</div>
+                <label><input type="checkbox" id="orderTypeLocal" name="orderTypeCheck"> محلي</label>
+                <label><input type="checkbox" id="orderTypeDelivery" name="orderTypeCheck"> سفري</label>
+                <div class="order-modal-location-wrap" id="orderModalLocationWrap">
+                    <a href="https://www.google.com/maps" target="_blank" rel="noopener" class="open-maps-link" id="orderOpenMapsLink">افتح خرائط جوجل لاختيار موقعك</a>
+                    <input type="url" id="orderLocationLink" class="form-control" placeholder="الصق رابط موقعك من خرائط جوجل هنا">
+                </div>
+            </div>
+            <button type="button" class="btn order-modal-confirm-btn" id="orderModalConfirmBtn">تأكيد الحجز</button>
+            <button type="button" class="order-modal-close" id="orderModalClose">إلغاء</button>
+        </div>
+    </div>
+
+    <script>
+        // تفاعل اللمس - رد فعل فوري عند الضغط
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.addEventListener('touchstart', function(e) {
+                const el = e.target.closest('.btn, .category-btn, .menu-item, .branch-card, .goal-card, .contact-card, .whatsapp-btn, .nav-links a, .menu-toggle');
+                if (el) el.classList.add('touch-active');
+            }, { passive: true });
+            document.body.addEventListener('touchend', function(e) {
+                document.querySelectorAll('.touch-active').forEach(el => el.classList.remove('touch-active'));
+            }, { passive: true });
+            document.body.addEventListener('touchcancel', function() {
+                document.querySelectorAll('.touch-active').forEach(el => el.classList.remove('touch-active'));
+            }, { passive: true });
+        });
+
+        // انبثاق العناصر من الأسفل عند التمرير
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('scroll-visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+        function observeScrollElements() {
+            document.querySelectorAll('.scroll-animate').forEach((el, i) => {
+                el.style.transitionDelay = (i % 6) * 0.08 + 's';
+                scrollObserver.observe(el);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', observeScrollElements);
+
+        // بيانات المنيو
+        const menuItems = [
+            // الوجبات الرئيسية - حبة كاملة
+            { id: 1, name: "حبه فحم مع الرز", description: "دجاج على الفحم مع الأرز", price: "44", category: "main", image: "دجاج فحم.jpeg" },
+            { id: 2, name: "حبه شواية مع الرز", description: "دجاج شواية مع الأرز", price: "44", category: "main", image: "دجاج شواية.jpeg" },
+            { id: 4, name: "حبه مندي مع الرز", description: "دجاج مندي مع الأرز", price: "44", category: "main", image: "https://kitchen.sayidaty.net/uploads/small/b5/b5444147329526cf94ec72e7f812bfc6_w750_h500.jpg" },
+            { id: 5, name: "حبه دجاج محمر", description: "دجاج مجمر بالبهارات", price: "44", category: "main", image: "https://i.ytimg.com/vi/6gMM2OWil5k/sddefault.jpg" },
+            // الوجبات الرئيسية - نصف
+            { id: 6, name: "نص فحم مع الرز", description: "نصف دجاج على الفحم مع الأرز", price: "22", category: "main", image: "دجاج فحم.jpeg" },
+            { id: 8, name: "نص مجمر", description: "نصف دجاج مجمر", price: "22", category: "main", image: "https://images.deliveryhero.io/image/menu-import-gateway-prd/regions/ME/chains/HS-MUHA/c688aab7fb33253cb260e02aa3cb9720.jpg?width=1440&quality=75&webp=true" },
+            { id: 9, name: "نص مضغوط", description: "نصف دجاج مضغوط", price: "22", category: "main", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/gz9agl767rgcwmybwlj9j6vswb53/banner.png?w=3840&q=75" },
+            { id: 10, name: "نص مندي مع الرز", description: "نصف مندي مع الأرز", price: "22", category: "main", image: "https://images.deliveryhero.io/image/hungerstation/product/image/1013401?width=1440&quality=75&webp=true" },
+            { id: 11, name: "نص فحم سادة", description: "نصف دجاج فحم سادة", price: "16", category: "main", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/q9dmods1invt6pszlbzmhwsawvj7/-.jpg?w=1080&q=75" },
+            { id: 12, name: "نص شواية سادة", description: "نصف دجاج شواية سادة", price: "16", category: "main", image: "https://media.mapp.sa/410260/conversions/1670324053_B18D4607-FFC9-4838-886A-75CA12DE5178-preview.jpeg" },
+            { id: 13, name: "نص مقلوبة", description: "نصف مقلوبة دجاج مع رز", price: "25", category: "main", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/9ghaumnxkkzmjdzl5r9xj1vje6x9/%D9%85%D9%82%D9%84%D9%88%D8%A8%D8%A9%20%D8%AF%D8%AC%D8%A7%D8%AC.jpg?w=1080&q=75" },
+            // الوجبات الرئيسية - ربع ونفر
+            { id: 14, name: "ربع شواية مع الرز", description: "ربع دجاج شواية مع الأرز", price: "12", category: "main", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/7k1dc4rbjg4zudazd0zw2ioico4y/%D9%84%D8%A8%D8%A8%D8%A8%D8%A8%D8%A8%D8%A7%D8%A1.jpg?w=1080&q=75" },
+            { id: 15, name: "ربع مندي مع الرز", description: "ربع مندي مع الأرز", price: "12", category: "main", image: "https://judealyamen.com/wp-content/uploads/2025/06/%D8%B1%D8%A8%D8%B9-%D9%85%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D9%86%D8%AF%D9%8A-%D8%AF%D8%AC%D8%A7%D8%AC.jpg" },
+            { id: 16, name: "نفر رز سادة", description: "طبق أرز سادة", price: "7", category: "main", image: "https://images.unsplash.com/photo-1516684732162-798a0062be99?w=600&q=80" },
+            { id: 17, name: "بروستد", description: "بروستد دجاج مقرمش", price: "18", category: "main", image: "https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=600&q=80" },
+            // المشروبات
+            { id: 18, name: "بيبسي علبة", description: "بيبسي، حمضيات، فانتا، فيفا، سفن", price: "3", category: "drinks", image: "https://cdn.salla.sa/YZVXo/Ka0RO1di4kn0hM1YQNaP0TT6NsjkrIbTofK1Hd02.png" },
+            { id: 19, name: "بيبسي 1 لتر", description: "عبوة لتر واحد", price: "5", category: "drinks", image: "https://cdn.mafrservices.com/sys-master-root/he3/h91/13975978410014/1696438_main.jpg?im=Resize=480" },
+            { id: 20, name: "بيبسي عائلة", description: "عبوة عائلة", price: "10", category: "drinks", image: "https://cdn.mafrservices.com/sys-master-root/hd6/h72/51636547878942/132370_main.jpg" },
+            { id: 21, name: "لبن المراعي", description: "لبن طازج", price: "2", category: "drinks", image: "https://cdn.mafrservices.com/sys-master-root/h48/hb0/50520420646942/480629_main.jpg?im=Resize=480" },
+            { id: 22, name: "زبادي", description: "زبادي طازج", price: "2", category: "drinks", image: "https://cdn.salla.sa/xPdma/wo7sGFltvCb4rlPvU7k6VjtmRRoGyfvnpFtcLnuq.jpg" },
+            // الأيدامات والسلطات
+            { id: 23, name: "مشكل خضار", description: "مجموعة من الخضار المختلطة", price: "8", category: "desserts", image: "مشكل خضار.jpeg" },
+            { id: 24, name: "مشكل فرن", description: "خضار مشكلة من الفرن", price: "9", category: "desserts", image: "مشكل فرن.jpeg" },
+            { id: 25, name: "بامية", description: "بامية مطبوخة", price: "8", category: "desserts", image: "بامية.jpeg" },
+            { id: 27, name: "مسقعة", description: "مسقعة بالباذنجان", price: "10", category: "desserts", image: "مسقع.jpeg" },
+            { id: 29, name: "سلطة خيار لبن", description: "خيار مع اللبن", price: "5", category: "desserts", image: "https://m.gomhuriaonline.com/Upload/News/5-1-2023_12_06_07_GomhuriaOnline_1672913167.jpg" },
+            { id: 30, name: "سلطة حارة", description: "سلطة بالتوابل الحارة", price: "3", category: "desserts", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/yh3hlo4cyti7kygz0c8ihkq8t58u/%D8%B3%D9%84%D8%B7%D8%A9%20%D8%AD%D8%A7%D8%B1%D8%A9.png" },
+            { id: 31, name: "طحينة حارة", description: "طحينة مع الفلفل الحار", price: "3", category: "desserts", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/k9nxjikhymalfjivoezoh5z3efqz/Spicy%20Tahina.%20%D8%B7%D8%AD%D9%8A%D9%86%D8%A9%20%D8%AD%D8%A7%D8%B1%D8%A9.png?w=1080&q=75" },
+            { id: 32, name: "طحينة", description: "طحينة سادة", price: "3", category: "desserts", image: "https://cdn.salla.sa/gllNN/GOCttUemgOeRzp77rpXKqnUqVi8INlsmM5eloSsc.jpg" }
+        ];
+
+        // عرض المنيو
+        function displayMenuItems(category = 'all') {
+            const container = document.getElementById('menu-items-container');
+            container.innerHTML = '';
+            
+            const filteredItems = category === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.category === category);
+            
+            filteredItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'menu-item scroll-animate';
+                itemElement.setAttribute('data-category', item.category);
+                
+                itemElement.innerHTML = `
+                    <div class="menu-item-img" style="background-image: url('${item.image}')"></div>
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-title">${item.name}</h3>
+                        <p class="menu-item-desc">${item.description}</p>
+                        <span class="menu-item-price">${item.price} RS</span>
+                        <button class="btn" onclick="orderItem(${item.id})">اطلب الآن</button>
+                    </div>
+                `;
+                
+                container.appendChild(itemElement);
+            });
+        }
+
+        // تصفية المنيو حسب التصنيف
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.getAttribute('data-category');
+                displayMenuItems(category);
+            });
+        });
+
+        // بيانات الفروع (مطابقة لقسم الفروع)
+        const branchesForOrder = [
+            { name: 'مطعم ركاز الديرة فرع صناعية فوزان', number: '966530585130' },
+            { name: 'مطاعم ركاز الديرة الرفائع', number: '966559929373' },
+            { name: 'مطاعم ركاز الديرة - محطة بترولي', number: '966534395313' },
+            { name: 'مطعم ركاز الديرة المزاحمية', number: '966538024202' },
+            { name: 'مطعم ركاز الديرة الغرابي', number: '966538736733' },
+            { name: 'مطعم ركاز الديرة - حي المناخ', number: '966536538320' },
+            { name: 'مطعم ركاز الديرة فرع الطويق', number: '966535463310' }
+        ];
+
+        let currentOrderItem = null;
+
+        function orderItem(itemId) {
+            currentOrderItem = menuItems.find(i => i.id === itemId);
+            const overlay = document.getElementById('orderModalOverlay');
+            const confirmBtn = document.getElementById('orderModalConfirmBtn');
+            confirmBtn.classList.remove('show');
+            document.querySelectorAll('#orderModalBranches input[name="orderBranch"]').forEach(r => { r.checked = false; });
+            document.getElementById('orderTypeLocal').checked = false;
+            document.getElementById('orderTypeDelivery').checked = false;
+            document.getElementById('orderModalLocationWrap').classList.remove('show');
+            document.getElementById('orderLocationLink').value = '';
+            overlay.classList.add('show');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const branchesEl = document.getElementById('orderModalBranches');
+            branchesForOrder.forEach(function(b) {
+                const label = document.createElement('label');
+                label.innerHTML = '<input type="radio" name="orderBranch" value="' + b.number + '" data-branch-name="' + b.name.replace(/"/g, '&quot;') + '"> <span>' + b.name + '</span>';
+                branchesEl.appendChild(label);
+            });
+
+            document.querySelectorAll('input[name="orderBranch"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    document.getElementById('orderModalConfirmBtn').classList.add('show');
+                });
+            });
+
+            var orderTypeLocal = document.getElementById('orderTypeLocal');
+            var orderTypeDelivery = document.getElementById('orderTypeDelivery');
+            var locationWrap = document.getElementById('orderModalLocationWrap');
+            var locationInput = document.getElementById('orderLocationLink');
+            orderTypeLocal.addEventListener('change', function() {
+                if (this.checked) {
+                    orderTypeDelivery.checked = false;
+                    locationWrap.classList.remove('show');
+                    locationInput.value = '';
+                }
+            });
+            orderTypeDelivery.addEventListener('change', function() {
+                if (this.checked) {
+                    orderTypeLocal.checked = false;
+                    locationWrap.classList.add('show');
+                } else {
+                    locationWrap.classList.remove('show');
+                    locationInput.value = '';
+                }
+            });
+
+            document.getElementById('orderModalConfirmBtn').addEventListener('click', function() {
+                const selected = document.querySelector('input[name="orderBranch"]:checked');
+                if (!selected || !currentOrderItem) return;
+
+                var isLocal = orderTypeLocal.checked;
+                var isDelivery = orderTypeDelivery.checked;
+                if (isLocal === isDelivery) {
+                    alert('من الضروري اختيار نوع الطلب: محلي أو سفري (واحد فقط)');
+                    return;
+                }
+
+                const branchName = selected.getAttribute('data-branch-name');
+                const branchNumber = selected.value;
+                var baseMessage = 'السلام عليكم هل يمكنني الحصول على هذه الوجبة اسم الوجبة (' + currentOrderItem.name + ') السعر (' + currentOrderItem.price + ' رس) الفرع (' + branchName + ')';
+
+                function sendWhatsApp(msg) {
+                    var whatsappUrl = 'https://wa.me/' + branchNumber + '?text=' + encodeURIComponent(msg);
+                    window.open(whatsappUrl, '_blank');
+                    document.getElementById('orderModalOverlay').classList.remove('show');
+                }
+
+                if (isLocal) {
+                    baseMessage += ' نوع الطلب محلي';
+                    sendWhatsApp(baseMessage);
+                    return;
+                }
+
+                if (isDelivery) {
+                    var mapLink = (document.getElementById('orderLocationLink').value || '').trim();
+                    if (!mapLink) {
+                        alert('يرجى فتح خرائط جوجل واختيار موقعك ثم نسخ الرابط ولصقه في الحقل أعلاه.');
+                        return;
+                    }
+                    if (mapLink.indexOf('google.com/maps') === -1 && mapLink.indexOf('maps.google') === -1 && mapLink.indexOf('goo.gl/maps') === -1 && mapLink.indexOf('maps.app.goo.gl') === -1) {
+                        alert('يرجى لصق رابط صحيح من خرائط جوجل.');
+                        return;
+                    }
+                    baseMessage += ' نوع الطلب (سفري) العنوان "' + mapLink + '"';
+                    sendWhatsApp(baseMessage);
+                }
+            });
+
+            document.getElementById('orderModalClose').addEventListener('click', function() {
+                document.getElementById('orderModalOverlay').classList.remove('show');
+            });
+            document.getElementById('orderModalOverlay').addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('show');
+            });
+        });
+
+        // وظيفة حجز طاولة - إرسال رسالة واتساب لرقم الفرع المختار
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const customerName = document.getElementById('customerName').value.trim();
+            const branchNumber = document.getElementById('branchSelect').value;
+            const date = document.getElementById('date').value;
+            const timeInput = document.getElementById('time').value;
+            
+            if (!branchNumber) {
+                alert('يرجى اختيار الفرع');
+                return;
+            }
+            
+            // تحويل الوقت من 24 ساعة إلى صيغة مقروءة (مثل 07:30 م)
+            let timeDisplay = timeInput;
+            const [h, m] = timeInput.split(':').map(Number);
+            if (h === 0) timeDisplay = '12:' + (m < 10 ? '0' + m : m) + ' ص';
+            else if (h < 12) timeDisplay = h + ':' + (m < 10 ? '0' + m : m) + ' ص';
+            else if (h === 12) timeDisplay = '12:' + (m < 10 ? '0' + m : m) + ' م';
+            else timeDisplay = (h - 12) + ':' + (m < 10 ? '0' + m : m) + ' م';
+            
+            const bookingMessage = `السلام عليكم اخوكم الزبون (${customerName}) اريد حجز طاولة في مطعكم ليوم ${date} بالوقت المحدد ${timeDisplay} وشكرا لكم`;
+            const whatsappUrl = `https://wa.me/${branchNumber}?text=${encodeURIComponent(bookingMessage)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            this.reset();
+            alert('سيتم تحويلك لواتساب فرع المطعم لإتمام الحجز. شكراً لك!');
+        });
+
+        // تهيئة التاريخ والوقت في نموذج الحجز
+        window.onload = function() {
+            displayMenuItems();
+            observeScrollElements();
+            
+            // تهيئة حقل التاريخ في نموذج الحجز
+            const dateEl = document.getElementById('date');
+            if (dateEl) {
+                const today = new Date().toISOString().split('T')[0];
+                dateEl.setAttribute('min', today);
+            }
+        };
+
+        // هامبرغر المنيو للموبايل
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                });
+            });
+        }
+
+        // التنقل السلس
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
