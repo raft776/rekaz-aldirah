@@ -343,6 +343,10 @@
             transition: var(--transition);
             overflow: hidden;
         }
+        .menu-item-img-empty {
+            background-color: #f5f5f5;
+            background-image: none;
+        }
         
         .menu-item-content {
             display: flex;
@@ -432,7 +436,17 @@
             color: var(--dark);
             margin-bottom: 10px;
         }
-        
+        .branch-fast-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: rgba(200, 50, 50, 0.1);
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-right: 6px;
+            margin-top: 4px;
+        }
         .branch-card .branch-city {
             font-size: 1rem;
             color: var(--gray);
@@ -498,8 +512,9 @@
             justify-content: center;
             padding: 8px 14px;
             font-size: 0.9rem;
-            background: #25D366;
-            color: white;
+            background: #fff;
+            color: var(--primary);
+            border: 1px solid var(--primary);
             border-radius: 25px;
             text-decoration: none;
             transition: var(--transition);
@@ -507,12 +522,13 @@
         }
 
         .branch-card .branch-whatsapp-btn:hover {
-            background: #128C7E;
+            background: rgba(200, 50, 50, 0.08);
             transform: translateY(-2px);
         }
 
         .branch-card .branch-whatsapp-btn i {
             font-size: 1rem;
+            color: var(--primary);
         }
         
         /* قسم الرؤية والأهداف */
@@ -694,6 +710,7 @@
         
         .whatsapp-btn i {
             margin-left: 8px;
+            color: var(--primary);
         }
         
         /* قسم الحجوزات */
@@ -829,6 +846,11 @@
         }
         .order-modal-location-wrap.show {
             display: block;
+        }
+        .order-modal-location-wrap .order-delivery-note {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--gray);
         }
         .order-modal-location-wrap .form-control {
             width: 100%;
@@ -1324,7 +1346,7 @@
             <div class="branches-grid">
                 <div class="branch-card scroll-animate">
                     <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h3 class="branch-name">مطعم ركاز الديرة فرع صناعية فوزان</h3>
+                    <h3 class="branch-name">مطعم ركاز الديرة فرع صناعية الفوزان</h3>
                     <p class="branch-city">طريق الرياض_الخرج مخرج ١١صناعية الفوزان محطة كويك بور</p>
                     <p class="branch-hours"><i class="fas fa-clock"></i> 4:00 ص - 12:00 ص</p>
                     <div class="branch-buttons">
@@ -1335,7 +1357,7 @@
                 </div>
                 <div class="branch-card scroll-animate">
                     <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h3 class="branch-name">مطاعم ركاز الديرة الرفائع</h3>
+                    <h3 class="branch-name">مطاعم ركاز الديرة الرفايع <span class="branch-fast-badge">وجبات سريعة</span></h3>
                     <p class="branch-city">طريق الخرج _الرياض  الرفايع مخرج ٧محطة الدريس</p>
                     <p class="branch-hours"><i class="fas fa-clock"></i> 10:00 ص - 12:00 ص</p>
                     <div class="branch-buttons">
@@ -1368,7 +1390,7 @@
                 </div>
                 <div class="branch-card scroll-animate">
                     <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h3 class="branch-name">مطعم ركاز الديرة الغرابي </h3>
+                    <h3 class="branch-name">مطعم ركاز الديرة الغرابي <span class="branch-fast-badge">وجبات سريعة</span></h3>
                     <p class="branch-city">الغرابي - شارع تميم بن بكر - جوار جامع الرشود</p>
                     <p class="branch-hours"><i class="fas fa-clock"></i> 4:00 ص - 1:00 ص</p>
                     <div class="branch-buttons">
@@ -1379,7 +1401,7 @@
                 </div>
                 <div class="branch-card scroll-animate">
                     <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h3 class="branch-name">مطعم ركاز الديرة  </h3>
+                    <h3 class="branch-name">مطعم ركاز الديرة - حي المناخ <span class="branch-fast-badge">وجبات سريعة</span></h3>
                     <p class="branch-city">طريق الخرج الرياض  حي المناخ جوار مستودع أمازون</p>
                     <p class="branch-hours"><i class="fas fa-clock"></i> 24 ساعة</p>
                     <div class="branch-buttons">
@@ -1390,7 +1412,7 @@
                 </div>
                 <div class="branch-card scroll-animate">
                     <div class="branch-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h3 class="branch-name">مطعم ركاز الديرة فرع الطويق </h3>
+                    <h3 class="branch-name">مطعم ركاز الديرة فرع طويق</h3>
                     <p class="branch-city">طويق طريق مكة محطة بيرومين</p>
                     <p class="branch-hours"><i class="fas fa-clock"></i> 24 ساعة</p>
                     <div class="branch-buttons">
@@ -1446,13 +1468,13 @@
                         <label for="branchSelect">الفرع المراد الحجز فيه</label>
                         <select id="branchSelect" class="form-control" required>
                             <option value="">اختر الفرع</option>
-                            <option value="966530585130">مطعم ركاز الديرة فرع صناعية فوزان</option>
-                            <option value="966559929373">مطاعم ركاز الديرة الرفائع</option>
+                            <option value="966530585130">مطعم ركاز الديرة فرع صناعية الفوزان</option>
+                            <option value="966559929373">مطاعم ركاز الديرة الرفايع — وجبات سريعة</option>
                             <option value="966534395313">مطاعم ركاز الديرة - محطة بترولي</option>
                             <option value="966538024202">مطعم ركاز الديرة المزاحمية</option>
-                            <option value="966538736733">مطعم ركاز الديرة الغرابي</option>
-                            <option value="966536538320">مطعم ركاز الديرة - حي المناخ</option>
-                            <option value="966535463310">مطعم ركاز الديرة فرع الطويق</option>
+                            <option value="966538736733">مطعم ركاز الديرة الغرابي — وجبات سريعة</option>
+                            <option value="966536538320">مطعم ركاز الديرة - حي المناخ — وجبات سريعة</option>
+                            <option value="966535463310">مطعم ركاز الديرة فرع طويق</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1519,10 +1541,10 @@
             <div class="order-modal-type">
                 <div class="order-type-title">نوع الطلب (اختر واحداً)</div>
                 <label><input type="checkbox" id="orderTypeLocal" name="orderTypeCheck"> محلي</label>
-                <label><input type="checkbox" id="orderTypeDelivery" name="orderTypeCheck"> سفري</label>
+                <label><input type="checkbox" id="orderTypeTakeaway" name="orderTypeCheck"> سفري</label>
+                <label><input type="checkbox" id="orderTypeDelivery" name="orderTypeCheck"> توصيل</label>
                 <div class="order-modal-location-wrap" id="orderModalLocationWrap">
-                    <a href="https://www.google.com/maps" target="_blank" rel="noopener" class="open-maps-link" id="orderOpenMapsLink">افتح خرائط جوجل لاختيار موقعك</a>
-                    <input type="url" id="orderLocationLink" class="form-control" placeholder="الصق رابط موقعك من خرائط جوجل هنا">
+                    <p class="order-delivery-note">عند التأكيد سيتم طلب موقعك الجغرافي الحالي وإرساله مع الطلب.</p>
                 </div>
             </div>
             <button type="button" class="btn order-modal-confirm-btn" id="orderModalConfirmBtn">تأكيد الحجز</button>
@@ -1590,6 +1612,7 @@
             { id: 21, name: "لبن المراعي", description: "لبن طازج", price: "2", category: "drinks", image: "https://cdn.mafrservices.com/sys-master-root/h48/hb0/50520420646942/480629_main.jpg?im=Resize=480" },
             { id: 22, name: "زبادي", description: "زبادي طازج", price: "2", category: "drinks", image: "https://cdn.salla.sa/xPdma/wo7sGFltvCb4rlPvU7k6VjtmRRoGyfvnpFtcLnuq.jpg" },
             // الأيدامات والسلطات
+             { id: 23, name: "مشكل خضار", description: "مجموعة من الخضار المختلطة", price: "8", category: "desserts", image: "مشكل خضار.jpeg" },
             { id: 23, name: "مشكل خضار", description: "مجموعة من الخضار المختلطة", price: "8", category: "desserts", image: "مشكل خضار.jpeg" },
             { id: 24, name: "مشكل فرن", description: "خضار مشكلة من الفرن", price: "9", category: "desserts", image: "مشكل فرن.jpeg" },
             { id: 25, name: "بامية", description: "بامية مطبوخة", price: "8", category: "desserts", image: "بامية.jpeg" },
@@ -1597,7 +1620,23 @@
             { id: 29, name: "سلطة خيار لبن", description: "خيار مع اللبن", price: "5", category: "desserts", image: "https://m.gomhuriaonline.com/Upload/News/5-1-2023_12_06_07_GomhuriaOnline_1672913167.jpg" },
             { id: 30, name: "سلطة حارة", description: "سلطة بالتوابل الحارة", price: "3", category: "desserts", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/yh3hlo4cyti7kygz0c8ihkq8t58u/%D8%B3%D9%84%D8%B7%D8%A9%20%D8%AD%D8%A7%D8%B1%D8%A9.png" },
             { id: 31, name: "طحينة حارة", description: "طحينة مع الفلفل الحار", price: "3", category: "desserts", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/k9nxjikhymalfjivoezoh5z3efqz/Spicy%20Tahina.%20%D8%B7%D8%AD%D9%8A%D9%86%D8%A9%20%D8%AD%D8%A7%D8%B1%D8%A9.png?w=1080&q=75" },
-            { id: 32, name: "طحينة", description: "طحينة سادة", price: "3", category: "desserts", image: "https://cdn.salla.sa/gllNN/GOCttUemgOeRzp77rpXKqnUqVi8INlsmM5eloSsc.jpg" }
+            { id: 32, name: "طحينة", description: "طحينة سادة", price: "3", category: "desserts", image: "https://cdn.salla.sa/gllNN/GOCttUemgOeRzp77rpXKqnUqVi8INlsmM5eloSsc.jpg" },
+            // وجبات جديدة (صورة وسعر فارغان)
+            { id: 33, name: "مقلقل لحم", description: "مقلقل لحم بالبهارات والرز", price: "", category: "main", image: "مقلقل لحم.jpeg" },
+            { id: 34, name: "مقلقل دجاج", description: "مقلقل دجاج بالبهارات والرز", price: "", category: "main", image: "مقلقل دجاج.jpeg" },
+            { id: 35, name: "مشكل مقبلات", description: "تشكيلة مقبلات متنوعة", price: "", category: "desserts", image: "مشكل مقبلات.jpeg" },
+            { id: 36, name: "خبز ملوح", description: "خبز يمني ملوح طازج", price: "", category: "desserts", image: "خبز ملوح.jpeg" },
+            { id: 37, name: "فول صنعاني", description: "فول بالطريقة الصنعانية", price: "", category: "desserts", image: "فول صنعاني.jpeg" },
+            { id: 38, name: "فاصولياء بيضاء", description: "فاصولياء بيضاء مطبوخة", price: "", category: "desserts", image: "فاصولياء بيضاء.jpeg" },
+            { id: 39, name: "فول طاوة", description: "فول طاوة تقليدي", price: "", category: "desserts", image: "فول طاوة.jpeg" },
+            { id: 40, name: "شكشوكة", description: "شكشوكة بيض بالطماطم والفلفل", price: "", category: "desserts", image: "شكشوكة.jpeg" },
+            { id: 41, name: "فتة تمر", description: "فتة بالتمر والحبوب", price: "", category: "desserts", image: "فتة تمر.jpeg" },
+            { id: 42, name: "ملوخية", description: "ملوخية خضراء مطبوخة", price: "", category: "desserts", image: "ملوخية.jpeg" },
+            { id: 43, name: "فاصولياء ناشف", description: "فاصولياء ناشفة مطبوخة", price: "", category: "desserts", image: "فاصولياء ناشف.jpeg" },
+            { id: 44, name: "معصوب ملكي", description: "معصوب ملكي بالعسل والموز", price: "", category: "desserts", image: "معصوب ملكي.jpeg" },
+            { id: 45, name: "معصوب", description: "معصوب يمني تقليدي", price: "", category: "desserts", image: "معصوب.jpeg" },
+            { id: 46, name: "كبدة غنم طازج", description: "كبدة غنم طازجة مشوية", price: "", category: "main", image: "كبدة غنم طازج.jpeg" },
+            { id: 47, name: "جريش", description: "جريش قمح تقليدي", price: "", category: "main", image: "جريش.jpeg" }
         ];
 
         // عرض المنيو
@@ -1614,12 +1653,15 @@
                 itemElement.className = 'menu-item scroll-animate';
                 itemElement.setAttribute('data-category', item.category);
                 
+                const imgStyle = item.image ? "background-image: url('" + item.image + "')" : "";
+                const imgClass = "menu-item-img" + (item.image ? "" : " menu-item-img-empty");
+                const priceText = item.price ? item.price + " RS" : "السعر عند الطلب";
                 itemElement.innerHTML = `
-                    <div class="menu-item-img" style="background-image: url('${item.image}')"></div>
+                    <div class="${imgClass}" style="${imgStyle}"></div>
                     <div class="menu-item-content">
                         <h3 class="menu-item-title">${item.name}</h3>
                         <p class="menu-item-desc">${item.description}</p>
-                        <span class="menu-item-price">${item.price} RS</span>
+                        <span class="menu-item-price">${priceText}</span>
                         <button class="btn" onclick="orderItem(${item.id})">اطلب الآن</button>
                     </div>
                 `;
@@ -1641,13 +1683,13 @@
 
         // بيانات الفروع (مطابقة لقسم الفروع)
         const branchesForOrder = [
-            { name: 'مطعم ركاز الديرة فرع صناعية فوزان', number: '966530585130' },
-            { name: 'مطاعم ركاز الديرة الرفائع', number: '966559929373' },
-            { name: 'مطاعم ركاز الديرة - محطة بترولي', number: '966534395313' },
-            { name: 'مطعم ركاز الديرة المزاحمية', number: '966538024202' },
-            { name: 'مطعم ركاز الديرة الغرابي', number: '966538736733' },
-            { name: 'مطعم ركاز الديرة - حي المناخ', number: '966536538320' },
-            { name: 'مطعم ركاز الديرة فرع الطويق', number: '966535463310' }
+            { name: 'مطعم ركاز الديرة فرع صناعية الفوزان', number: '966530585130', fastMeals: false },
+            { name: 'مطاعم ركاز الديرة الرفايع', number: '966559929373', fastMeals: true },
+            { name: 'مطاعم ركاز الديرة - محطة بترولي', number: '966534395313', fastMeals: false },
+            { name: 'مطعم ركاز الديرة المزاحمية', number: '966538024202', fastMeals: false },
+            { name: 'مطعم ركاز الديرة الغرابي', number: '966538736733', fastMeals: true },
+            { name: 'مطعم ركاز الديرة - حي المناخ', number: '966536538320', fastMeals: true },
+            { name: 'مطعم ركاز الديرة فرع طويق', number: '966535463310', fastMeals: false }
         ];
 
         let currentOrderItem = null;
@@ -1659,9 +1701,9 @@
             confirmBtn.classList.remove('show');
             document.querySelectorAll('#orderModalBranches input[name="orderBranch"]').forEach(r => { r.checked = false; });
             document.getElementById('orderTypeLocal').checked = false;
+            document.getElementById('orderTypeTakeaway').checked = false;
             document.getElementById('orderTypeDelivery').checked = false;
             document.getElementById('orderModalLocationWrap').classList.remove('show');
-            document.getElementById('orderLocationLink').value = '';
             overlay.classList.add('show');
         }
 
@@ -1669,7 +1711,8 @@
             const branchesEl = document.getElementById('orderModalBranches');
             branchesForOrder.forEach(function(b) {
                 const label = document.createElement('label');
-                label.innerHTML = '<input type="radio" name="orderBranch" value="' + b.number + '" data-branch-name="' + b.name.replace(/"/g, '&quot;') + '"> <span>' + b.name + '</span>';
+                var badge = b.fastMeals ? ' <span class="branch-fast-badge">وجبات سريعة</span>' : '';
+                label.innerHTML = '<input type="radio" name="orderBranch" value="' + b.number + '" data-branch-name="' + b.name.replace(/"/g, '&quot;') + '"> <span>' + b.name + '</span>' + badge;
                 branchesEl.appendChild(label);
             });
 
@@ -1680,24 +1723,23 @@
             });
 
             var orderTypeLocal = document.getElementById('orderTypeLocal');
+            var orderTypeTakeaway = document.getElementById('orderTypeTakeaway');
             var orderTypeDelivery = document.getElementById('orderTypeDelivery');
             var locationWrap = document.getElementById('orderModalLocationWrap');
-            var locationInput = document.getElementById('orderLocationLink');
+            function uncheckOtherTypes(except) {
+                if (except !== 'local') orderTypeLocal.checked = false;
+                if (except !== 'takeaway') orderTypeTakeaway.checked = false;
+                if (except !== 'delivery') orderTypeDelivery.checked = false;
+            }
             orderTypeLocal.addEventListener('change', function() {
-                if (this.checked) {
-                    orderTypeDelivery.checked = false;
-                    locationWrap.classList.remove('show');
-                    locationInput.value = '';
-                }
+                if (this.checked) { uncheckOtherTypes('local'); locationWrap.classList.remove('show'); }
+            });
+            orderTypeTakeaway.addEventListener('change', function() {
+                if (this.checked) { uncheckOtherTypes('takeaway'); locationWrap.classList.remove('show'); }
             });
             orderTypeDelivery.addEventListener('change', function() {
-                if (this.checked) {
-                    orderTypeLocal.checked = false;
-                    locationWrap.classList.add('show');
-                } else {
-                    locationWrap.classList.remove('show');
-                    locationInput.value = '';
-                }
+                if (this.checked) { uncheckOtherTypes('delivery'); locationWrap.classList.add('show'); }
+                else locationWrap.classList.remove('show');
             });
 
             document.getElementById('orderModalConfirmBtn').addEventListener('click', function() {
@@ -1705,15 +1747,18 @@
                 if (!selected || !currentOrderItem) return;
 
                 var isLocal = orderTypeLocal.checked;
+                var isTakeaway = orderTypeTakeaway.checked;
                 var isDelivery = orderTypeDelivery.checked;
-                if (isLocal === isDelivery) {
-                    alert('من الضروري اختيار نوع الطلب: محلي أو سفري (واحد فقط)');
+                var chosen = (isLocal ? 1 : 0) + (isTakeaway ? 1 : 0) + (isDelivery ? 1 : 0);
+                if (chosen !== 1) {
+                    alert('من الضروري اختيار نوع الطلب: محلي أو سفري أو توصيل (واحد فقط)');
                     return;
                 }
 
                 const branchName = selected.getAttribute('data-branch-name');
                 const branchNumber = selected.value;
-                var baseMessage = 'السلام عليكم هل يمكنني الحصول على هذه الوجبة اسم الوجبة (' + currentOrderItem.name + ') السعر (' + currentOrderItem.price + ' رس) الفرع (' + branchName + ')';
+                var priceText = currentOrderItem.price ? currentOrderItem.price + ' رس' : 'يُحدد لاحقاً';
+                var basePart = 'السلام عليكم، أود طلب التالي:\nالطلب: ' + currentOrderItem.name + '\nالسعر: ' + priceText + '\nالفرع: ' + branchName;
 
                 function sendWhatsApp(msg) {
                     var whatsappUrl = 'https://wa.me/' + branchNumber + '?text=' + encodeURIComponent(msg);
@@ -1722,23 +1767,39 @@
                 }
 
                 if (isLocal) {
-                    baseMessage += ' نوع الطلب محلي';
-                    sendWhatsApp(baseMessage);
+                    var msg = basePart + '\nنوع الطلب: محلي';
+                    sendWhatsApp(msg);
+                    return;
+                }
+
+                if (isTakeaway) {
+                    var msg = basePart + '\nنوع الطلب: سفري';
+                    sendWhatsApp(msg);
                     return;
                 }
 
                 if (isDelivery) {
-                    var mapLink = (document.getElementById('orderLocationLink').value || '').trim();
-                    if (!mapLink) {
-                        alert('يرجى فتح خرائط جوجل واختيار موقعك ثم نسخ الرابط ولصقه في الحقل أعلاه.');
+                    if (!navigator.geolocation) {
+                        alert('المتصفح لا يدعم تحديد الموقع. يرجى استخدام جهاز أو متصفح يدعم الموقع.');
                         return;
                     }
-                    if (mapLink.indexOf('google.com/maps') === -1 && mapLink.indexOf('maps.google') === -1 && mapLink.indexOf('goo.gl/maps') === -1 && mapLink.indexOf('maps.app.goo.gl') === -1) {
-                        alert('يرجى لصق رابط صحيح من خرائط جوجل.');
-                        return;
-                    }
-                    baseMessage += ' نوع الطلب (سفري) العنوان "' + mapLink + '"';
-                    sendWhatsApp(baseMessage);
+                    document.getElementById('orderModalConfirmBtn').disabled = true;
+                    navigator.geolocation.getCurrentPosition(
+                        function(pos) {
+                            var lat = pos.coords.latitude;
+                            var lng = pos.coords.longitude;
+                            var mapsLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+                            var msg = basePart + '\nنوع الطلب: توصيل\nالموقع: ' + mapsLink;
+                            sendWhatsApp(msg);
+                            document.getElementById('orderModalConfirmBtn').disabled = false;
+                        },
+                        function(err) {
+                            document.getElementById('orderModalConfirmBtn').disabled = false;
+                            if (err.code === 1) alert('تم رفض إذن الموقع. يرجى السماح بالموقع لإتمام طلب التوصيل.');
+                            else alert('تعذر الحصول على الموقع. يرجى التأكد من تفعيل الموقع والمحاولة مرة أخرى.');
+                        },
+                        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                    );
                 }
             });
 
