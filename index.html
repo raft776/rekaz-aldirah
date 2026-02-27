@@ -885,6 +885,111 @@
             cursor: pointer;
             font-weight: 600;
         }
+
+        /* زر طلبي العائم */
+        .cart-float-btn {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(200, 50, 50, 0.4);
+            transition: var(--transition);
+        }
+        .cart-float-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+        .cart-float-count {
+            background: white;
+            color: var(--primary);
+            min-width: 22px;
+            height: 22px;
+            border-radius: 11px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        .cart-float-btn.hidden { display: none; }
+
+        /* نافذة قائمة الطلبات */
+        .cart-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .cart-modal-overlay.show { display: flex; }
+        .cart-modal {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 85vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-modal h3 { margin: 0 0 16px; font-size: 1.25rem; }
+        .cart-modal-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            min-height: 80px;
+        }
+        .cart-modal-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            gap: 8px;
+        }
+        .cart-modal-item span:first-child { flex: 1; font-weight: 600; }
+        .cart-modal-item .cart-item-price { color: var(--primary); }
+        .cart-modal-item button {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .cart-modal-item button:hover { color: var(--primary); }
+        .cart-modal-total {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+        .cart-modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .cart-modal-actions .btn { flex: 1; }
+        .cart-modal-close {
+            padding: 12px 20px;
+            background: #eee;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
         
         /* تذييل الصفحة */
         footer {
@@ -1552,6 +1657,26 @@
         </div>
     </div>
 
+    <!-- زر طلبي (عربة الطلبات) -->
+    <button type="button" class="cart-float-btn" id="cartFloatBtn" aria-label="قائمة طلباتي">
+        <i class="fas fa-shopping-basket"></i>
+        <span class="cart-float-label">طلبي</span>
+        <span class="cart-float-count" id="cartFloatCount">0</span>
+    </button>
+
+    <!-- نافذة قائمة الطلبات -->
+    <div class="cart-modal-overlay" id="cartModalOverlay">
+        <div class="cart-modal">
+            <h3>قائمة طلباتي</h3>
+            <div class="cart-modal-list" id="cartModalList"></div>
+            <div class="cart-modal-total" id="cartModalTotal"></div>
+            <div class="cart-modal-actions">
+                <button type="button" class="btn" id="cartSendOrderBtn">إرسال الطلب</button>
+                <button type="button" class="cart-modal-close" id="cartModalClose">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // تفاعل اللمس - رد فعل فوري عند الضغط
         document.addEventListener('DOMContentLoaded', function() {
@@ -1590,21 +1715,8 @@
             // الوجبات الرئيسية - حبة كاملة
             { id: 1, name: "حبه فحم مع الرز", description: "دجاج على الفحم مع الأرز", price: "44", category: "main", image: "دجاج فحم.jpeg" },
             { id: 2, name: "حبه شواية مع الرز", description: "دجاج شواية مع الأرز", price: "44", category: "main", image: "دجاج شواية.jpeg" },
-            { id: 4, name: "حبه مندي مع الرز", description: "دجاج مندي مع الأرز", price: "44", category: "main", image: "https://kitchen.sayidaty.net/uploads/small/b5/b5444147329526cf94ec72e7f812bfc6_w750_h500.jpg" },
-            { id: 5, name: "حبه دجاج محمر", description: "دجاج مجمر بالبهارات", price: "44", category: "main", image: "https://i.ytimg.com/vi/6gMM2OWil5k/sddefault.jpg" },
             // الوجبات الرئيسية - نصف
             { id: 6, name: "نص فحم مع الرز", description: "نصف دجاج على الفحم مع الأرز", price: "22", category: "main", image: "دجاج فحم.jpeg" },
-            { id: 8, name: "نص مجمر", description: "نصف دجاج مجمر", price: "22", category: "main", image: "https://images.deliveryhero.io/image/menu-import-gateway-prd/regions/ME/chains/HS-MUHA/c688aab7fb33253cb260e02aa3cb9720.jpg?width=1440&quality=75&webp=true" },
-            { id: 9, name: "نص مضغوط", description: "نصف دجاج مضغوط", price: "22", category: "main", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/gz9agl767rgcwmybwlj9j6vswb53/banner.png?w=3840&q=75" },
-            { id: 10, name: "نص مندي مع الرز", description: "نصف مندي مع الأرز", price: "22", category: "main", image: "https://images.deliveryhero.io/image/hungerstation/product/image/1013401?width=1440&quality=75&webp=true" },
-            { id: 11, name: "نص فحم سادة", description: "نصف دجاج فحم سادة", price: "16", category: "main", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/q9dmods1invt6pszlbzmhwsawvj7/-.jpg?w=1080&q=75" },
-            { id: 12, name: "نص شواية سادة", description: "نصف دجاج شواية سادة", price: "16", category: "main", image: "https://media.mapp.sa/410260/conversions/1670324053_B18D4607-FFC9-4838-886A-75CA12DE5178-preview.jpeg" },
-            { id: 13, name: "نص مقلوبة", description: "نصف مقلوبة دجاج مع رز", price: "25", category: "main", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/9ghaumnxkkzmjdzl5r9xj1vje6x9/%D9%85%D9%82%D9%84%D9%88%D8%A8%D8%A9%20%D8%AF%D8%AC%D8%A7%D8%AC.jpg?w=1080&q=75" },
-            // الوجبات الرئيسية - ربع ونفر
-            { id: 14, name: "ربع شواية مع الرز", description: "ربع دجاج شواية مع الأرز", price: "12", category: "main", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/7k1dc4rbjg4zudazd0zw2ioico4y/%D9%84%D8%A8%D8%A8%D8%A8%D8%A8%D8%A8%D8%A7%D8%A1.jpg?w=1080&q=75" },
-            { id: 15, name: "ربع مندي مع الرز", description: "ربع مندي مع الأرز", price: "12", category: "main", image: "https://judealyamen.com/wp-content/uploads/2025/06/%D8%B1%D8%A8%D8%B9-%D9%85%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D9%86%D8%AF%D9%8A-%D8%AF%D8%AC%D8%A7%D8%AC.jpg" },
-            { id: 16, name: "نفر رز سادة", description: "طبق أرز سادة", price: "7", category: "main", image: "https://images.unsplash.com/photo-1516684732162-798a0062be99?w=600&q=80" },
-            { id: 17, name: "بروستد", description: "بروستد دجاج مقرمش", price: "18", category: "main", image: "https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=600&q=80" },
             // المشروبات
             { id: 18, name: "بيبسي علبة", description: "بيبسي، حمضيات، فانتا، فيفا، سفن", price: "3", category: "drinks", image: "https://cdn.salla.sa/YZVXo/Ka0RO1di4kn0hM1YQNaP0TT6NsjkrIbTofK1Hd02.png" },
             { id: 19, name: "بيبسي 1 لتر", description: "عبوة لتر واحد", price: "5", category: "drinks", image: "https://cdn.mafrservices.com/sys-master-root/he3/h91/13975978410014/1696438_main.jpg?im=Resize=480" },
@@ -1617,10 +1729,6 @@
             { id: 24, name: "مشكل فرن", description: "خضار مشكلة من الفرن", price: "9", category: "desserts", image: "مشكل فرن.jpeg" },
             { id: 25, name: "بامية", description: "بامية مطبوخة", price: "8", category: "desserts", image: "بامية.jpeg" },
             { id: 27, name: "مسقعة", description: "مسقعة بالباذنجان", price: "10", category: "desserts", image: "مسقع.jpeg" },
-            { id: 29, name: "سلطة خيار لبن", description: "خيار مع اللبن", price: "5", category: "desserts", image: "https://m.gomhuriaonline.com/Upload/News/5-1-2023_12_06_07_GomhuriaOnline_1672913167.jpg" },
-            { id: 30, name: "سلطة حارة", description: "سلطة بالتوابل الحارة", price: "3", category: "desserts", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/yh3hlo4cyti7kygz0c8ihkq8t58u/%D8%B3%D9%84%D8%B7%D8%A9%20%D8%AD%D8%A7%D8%B1%D8%A9.png" },
-            { id: 31, name: "طحينة حارة", description: "طحينة مع الفلفل الحار", price: "3", category: "desserts", image: "https://img.ananinja.com/media/ninja-catalog-42/restaurants/k9nxjikhymalfjivoezoh5z3efqz/Spicy%20Tahina.%20%D8%B7%D8%AD%D9%8A%D9%86%D8%A9%20%D8%AD%D8%A7%D8%B1%D8%A9.png?w=1080&q=75" },
-            { id: 32, name: "طحينة", description: "طحينة سادة", price: "3", category: "desserts", image: "https://cdn.salla.sa/gllNN/GOCttUemgOeRzp77rpXKqnUqVi8INlsmM5eloSsc.jpg" },
             // وجبات جديدة (صورة وسعر فارغان)
             { id: 33, name: "مقلقل لحم", description: "مقلقل لحم بالبهارات والرز", price: "", category: "main", image: "مقلقل لحم.jpeg" },
             { id: 34, name: "مقلقل دجاج", description: "مقلقل دجاج بالبهارات والرز", price: "", category: "main", image: "مقلقل دجاج.jpeg" },
@@ -1662,7 +1770,7 @@
                         <h3 class="menu-item-title">${item.name}</h3>
                         <p class="menu-item-desc">${item.description}</p>
                         <span class="menu-item-price">${priceText}</span>
-                        <button class="btn" onclick="orderItem(${item.id})">اطلب الآن</button>
+                        <button class="btn" onclick="addToCart(${item.id})">إضافة إلى قائمة الطلبات</button>
                     </div>
                 `;
                 
@@ -1693,9 +1801,51 @@
         ];
 
         let currentOrderItem = null;
+        let orderCart = [];
+        let isCartOrder = false;
+
+        function addToCart(itemId) {
+            var item = menuItems.find(function(i) { return i.id === itemId; });
+            if (!item) return;
+            orderCart.push({ id: item.id, name: item.name, price: item.price });
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            orderCart.splice(index, 1);
+            updateCartUI();
+            renderCartModal();
+        }
+
+        function updateCartUI() {
+            var countEl = document.getElementById('cartFloatCount');
+            var btn = document.getElementById('cartFloatBtn');
+            if (countEl) countEl.textContent = orderCart.length;
+            if (btn) btn.classList.toggle('hidden', orderCart.length === 0);
+        }
+
+        function renderCartModal() {
+            var listEl = document.getElementById('cartModalList');
+            var totalEl = document.getElementById('cartModalTotal');
+            if (!listEl || !totalEl) return;
+            listEl.innerHTML = '';
+            var totalNum = 0;
+            var hasUnknownPrice = false;
+            orderCart.forEach(function(row, i) {
+                var priceStr = row.price ? row.price + ' رس' : 'يُحدد لاحقاً';
+                if (row.price) totalNum += parseInt(row.price, 10); else hasUnknownPrice = true;
+                var div = document.createElement('div');
+                div.className = 'cart-modal-item';
+                div.innerHTML = '<span>' + (i + 1) + '- ' + row.name + '</span><span class="cart-item-price">' + priceStr + '</span><button type="button" onclick="removeFromCart(' + i + ')" aria-label="حذف"><i class="fas fa-times"></i></button>';
+                listEl.appendChild(div);
+            });
+            var totalText = hasUnknownPrice ? (totalNum > 0 ? totalNum + ' رس + (يُحدد لاحقاً لبعض الأصناف)' : 'يُحدد لاحقاً') : totalNum + ' رس';
+            totalEl.textContent = 'اجمالي الطلب: ' + totalText;
+        }
 
         function orderItem(itemId) {
             currentOrderItem = menuItems.find(i => i.id === itemId);
+            isCartOrder = false;
             const overlay = document.getElementById('orderModalOverlay');
             const confirmBtn = document.getElementById('orderModalConfirmBtn');
             confirmBtn.classList.remove('show');
@@ -1744,8 +1894,6 @@
 
             document.getElementById('orderModalConfirmBtn').addEventListener('click', function() {
                 const selected = document.querySelector('input[name="orderBranch"]:checked');
-                if (!selected || !currentOrderItem) return;
-
                 var isLocal = orderTypeLocal.checked;
                 var isTakeaway = orderTypeTakeaway.checked;
                 var isDelivery = orderTypeDelivery.checked;
@@ -1754,11 +1902,10 @@
                     alert('من الضروري اختيار نوع الطلب: محلي أو سفري أو توصيل (واحد فقط)');
                     return;
                 }
+                if (!selected) return;
 
                 const branchName = selected.getAttribute('data-branch-name');
                 const branchNumber = selected.value;
-                var priceText = currentOrderItem.price ? currentOrderItem.price + ' رس' : 'يُحدد لاحقاً';
-                var basePart = 'السلام عليكم، أود طلب التالي:\nالطلب: ' + currentOrderItem.name + '\nالسعر: ' + priceText + '\nالفرع: ' + branchName;
 
                 function sendWhatsApp(msg) {
                     var whatsappUrl = 'https://wa.me/' + branchNumber + '?text=' + encodeURIComponent(msg);
@@ -1766,18 +1913,70 @@
                     document.getElementById('orderModalOverlay').classList.remove('show');
                 }
 
+                if (isCartOrder && orderCart.length > 0) {
+                    var totalNum = 0;
+                    var hasUnknownPrice = false;
+                    var lines = orderCart.map(function(row, i) {
+                        var priceStr = row.price ? row.price + ' رس' : 'يُحدد لاحقاً';
+                        if (row.price) totalNum += parseInt(row.price, 10); else hasUnknownPrice = true;
+                        return (i + 1) + '- ' + row.name + ' (' + priceStr + ')';
+                    });
+                    var totalText = hasUnknownPrice ? (totalNum > 0 ? totalNum + ' رس + (يُحدد لاحقاً)' : 'يُحدد لاحقاً') : totalNum + ' رس';
+                    var baseCartMsg = 'السلام عليكم هل يمكنني ان احصل على هذه الطلبات\n' + lines.join('\n') + '\nاجمالي الطلب (' + totalText + ')\nالفرع: ' + branchName + '\nوشكرا';
+
+                    function sendCartWhatsApp(msg) {
+                        sendWhatsApp(msg);
+                        orderCart = [];
+                        isCartOrder = false;
+                        updateCartUI();
+                    }
+
+                    if (isLocal) {
+                        sendCartWhatsApp(baseCartMsg + '\nنوع الطلب: محلي');
+                        return;
+                    }
+                    if (isTakeaway) {
+                        sendCartWhatsApp(baseCartMsg + '\nنوع الطلب: سفري');
+                        return;
+                    }
+                    if (isDelivery) {
+                        if (!navigator.geolocation) {
+                            alert('المتصفح لا يدعم تحديد الموقع. يرجى استخدام جهاز أو متصفح يدعم الموقع.');
+                            return;
+                        }
+                        document.getElementById('orderModalConfirmBtn').disabled = true;
+                        navigator.geolocation.getCurrentPosition(
+                            function(pos) {
+                                var lat = pos.coords.latitude;
+                                var lng = pos.coords.longitude;
+                                var mapsLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+                                sendCartWhatsApp(baseCartMsg + '\nنوع الطلب: توصيل\nالموقع: ' + mapsLink);
+                                document.getElementById('orderModalConfirmBtn').disabled = false;
+                            },
+                            function(err) {
+                                document.getElementById('orderModalConfirmBtn').disabled = false;
+                                if (err.code === 1) alert('تم رفض إذن الموقع. يرجى السماح بالموقع لإتمام طلب التوصيل.');
+                                else alert('تعذر الحصول على الموقع. يرجى التأكد من تفعيل الموقع والمحاولة مرة أخرى.');
+                            },
+                            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                        );
+                    }
+                    return;
+                }
+
+                if (!currentOrderItem) return;
+
+                var priceText = currentOrderItem.price ? currentOrderItem.price + ' رس' : 'يُحدد لاحقاً';
+                var basePart = 'السلام عليكم، أود طلب التالي:\nالطلب: ' + currentOrderItem.name + '\nالسعر: ' + priceText + '\nالفرع: ' + branchName;
+
                 if (isLocal) {
-                    var msg = basePart + '\nنوع الطلب: محلي';
-                    sendWhatsApp(msg);
+                    sendWhatsApp(basePart + '\nنوع الطلب: محلي');
                     return;
                 }
-
                 if (isTakeaway) {
-                    var msg = basePart + '\nنوع الطلب: سفري';
-                    sendWhatsApp(msg);
+                    sendWhatsApp(basePart + '\nنوع الطلب: سفري');
                     return;
                 }
-
                 if (isDelivery) {
                     if (!navigator.geolocation) {
                         alert('المتصفح لا يدعم تحديد الموقع. يرجى استخدام جهاز أو متصفح يدعم الموقع.');
@@ -1808,6 +2007,34 @@
             });
             document.getElementById('orderModalOverlay').addEventListener('click', function(e) {
                 if (e.target === this) this.classList.remove('show');
+            });
+
+            updateCartUI();
+
+            document.getElementById('cartFloatBtn').addEventListener('click', function() {
+                renderCartModal();
+                document.getElementById('cartModalOverlay').classList.add('show');
+            });
+            document.getElementById('cartModalClose').addEventListener('click', function() {
+                document.getElementById('cartModalOverlay').classList.remove('show');
+            });
+            document.getElementById('cartModalOverlay').addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('show');
+            });
+            document.getElementById('cartSendOrderBtn').addEventListener('click', function() {
+                if (orderCart.length === 0) {
+                    alert('قائمة الطلبات فارغة. أضف أصنافاً من المنيو أولاً.');
+                    return;
+                }
+                document.getElementById('cartModalOverlay').classList.remove('show');
+                isCartOrder = true;
+                document.querySelectorAll('#orderModalBranches input[name="orderBranch"]').forEach(function(r) { r.checked = false; });
+                document.getElementById('orderTypeLocal').checked = false;
+                document.getElementById('orderTypeTakeaway').checked = false;
+                document.getElementById('orderTypeDelivery').checked = false;
+                document.getElementById('orderModalLocationWrap').classList.remove('show');
+                document.getElementById('orderModalConfirmBtn').classList.remove('show');
+                document.getElementById('orderModalOverlay').classList.add('show');
             });
         });
 
