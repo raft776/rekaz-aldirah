@@ -1649,7 +1649,9 @@
                 <label><input type="checkbox" id="orderTypeTakeaway" name="orderTypeCheck"> سفري</label>
                 <label><input type="checkbox" id="orderTypeDelivery" name="orderTypeCheck"> توصيل</label>
                 <div class="order-modal-location-wrap" id="orderModalLocationWrap">
-                    <p class="order-delivery-note">عند التأكيد سيتم طلب موقعك الجغرافي الحالي وإرساله مع الطلب.</p>
+                    <p class="order-delivery-note">يرجى لصق رابط موقعك من خرائط جوجل في الحقل أدناه.</p>
+                    <a href="https://www.google.com/maps" target="_blank" rel="noopener" class="open-maps-link">افتح خرائط جوجل لنسخ رابط موقعك</a>
+                    <input type="url" id="orderLocationLink" class="form-control" placeholder="الصق رابط موقعك من خرائط جوجل هنا">
                 </div>
             </div>
             <button type="button" class="btn order-modal-confirm-btn" id="orderModalConfirmBtn">تأكيد الحجز</button>
@@ -1854,6 +1856,8 @@
             document.getElementById('orderTypeTakeaway').checked = false;
             document.getElementById('orderTypeDelivery').checked = false;
             document.getElementById('orderModalLocationWrap').classList.remove('show');
+            var locInput = document.getElementById('orderLocationLink');
+            if (locInput) locInput.value = '';
             overlay.classList.add('show');
         }
 
@@ -1887,9 +1891,10 @@
             orderTypeTakeaway.addEventListener('change', function() {
                 if (this.checked) { uncheckOtherTypes('takeaway'); locationWrap.classList.remove('show'); }
             });
+            var locationInput = document.getElementById('orderLocationLink');
             orderTypeDelivery.addEventListener('change', function() {
                 if (this.checked) { uncheckOtherTypes('delivery'); locationWrap.classList.add('show'); }
-                else locationWrap.classList.remove('show');
+                else { locationWrap.classList.remove('show'); if (locationInput) locationInput.value = ''; }
             });
 
             document.getElementById('orderModalConfirmBtn').addEventListener('click', function() {
@@ -1940,26 +1945,16 @@
                         return;
                     }
                     if (isDelivery) {
-                        if (!navigator.geolocation) {
-                            alert('المتصفح لا يدعم تحديد الموقع. يرجى استخدام جهاز أو متصفح يدعم الموقع.');
+                        var mapLink = (document.getElementById('orderLocationLink').value || '').trim();
+                        if (!mapLink) {
+                            alert('يرجى لصق رابط موقعك من خرائط جوجل في الحقل المخصص للتوصيل.');
                             return;
                         }
-                        document.getElementById('orderModalConfirmBtn').disabled = true;
-                        navigator.geolocation.getCurrentPosition(
-                            function(pos) {
-                                var lat = pos.coords.latitude;
-                                var lng = pos.coords.longitude;
-                                var mapsLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
-                                sendCartWhatsApp(baseCartMsg + '\nنوع الطلب: توصيل\nالموقع: ' + mapsLink);
-                                document.getElementById('orderModalConfirmBtn').disabled = false;
-                            },
-                            function(err) {
-                                document.getElementById('orderModalConfirmBtn').disabled = false;
-                                if (err.code === 1) alert('تم رفض إذن الموقع. يرجى السماح بالموقع لإتمام طلب التوصيل.');
-                                else alert('تعذر الحصول على الموقع. يرجى التأكد من تفعيل الموقع والمحاولة مرة أخرى.');
-                            },
-                            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-                        );
+                        if (mapLink.indexOf('google.com/maps') === -1 && mapLink.indexOf('maps.google') === -1 && mapLink.indexOf('goo.gl/maps') === -1 && mapLink.indexOf('maps.app.goo.gl') === -1) {
+                            alert('يرجى لصق رابط صحيح من خرائط جوجل.');
+                            return;
+                        }
+                        sendCartWhatsApp(baseCartMsg + '\nنوع الطلب: توصيل\nالموقع: ' + mapLink);
                     }
                     return;
                 }
@@ -1978,27 +1973,17 @@
                     return;
                 }
                 if (isDelivery) {
-                    if (!navigator.geolocation) {
-                        alert('المتصفح لا يدعم تحديد الموقع. يرجى استخدام جهاز أو متصفح يدعم الموقع.');
+                    var mapLink = (document.getElementById('orderLocationLink').value || '').trim();
+                    if (!mapLink) {
+                        alert('يرجى لصق رابط موقعك من خرائط جوجل في الحقل المخصص للتوصيل.');
                         return;
                     }
-                    document.getElementById('orderModalConfirmBtn').disabled = true;
-                    navigator.geolocation.getCurrentPosition(
-                        function(pos) {
-                            var lat = pos.coords.latitude;
-                            var lng = pos.coords.longitude;
-                            var mapsLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
-                            var msg = basePart + '\nنوع الطلب: توصيل\nالموقع: ' + mapsLink;
-                            sendWhatsApp(msg);
-                            document.getElementById('orderModalConfirmBtn').disabled = false;
-                        },
-                        function(err) {
-                            document.getElementById('orderModalConfirmBtn').disabled = false;
-                            if (err.code === 1) alert('تم رفض إذن الموقع. يرجى السماح بالموقع لإتمام طلب التوصيل.');
-                            else alert('تعذر الحصول على الموقع. يرجى التأكد من تفعيل الموقع والمحاولة مرة أخرى.');
-                        },
-                        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-                    );
+                    if (mapLink.indexOf('google.com/maps') === -1 && mapLink.indexOf('maps.google') === -1 && mapLink.indexOf('goo.gl/maps') === -1 && mapLink.indexOf('maps.app.goo.gl') === -1) {
+                        alert('يرجى لصق رابط صحيح من خرائط جوجل.');
+                        return;
+                    }
+                    var msg = basePart + '\nنوع الطلب: توصيل\nالموقع: ' + mapLink;
+                    sendWhatsApp(msg);
                 }
             });
 
@@ -2033,6 +2018,8 @@
                 document.getElementById('orderTypeTakeaway').checked = false;
                 document.getElementById('orderTypeDelivery').checked = false;
                 document.getElementById('orderModalLocationWrap').classList.remove('show');
+                var locInp = document.getElementById('orderLocationLink');
+                if (locInp) locInp.value = '';
                 document.getElementById('orderModalConfirmBtn').classList.remove('show');
                 document.getElementById('orderModalOverlay').classList.add('show');
             });
